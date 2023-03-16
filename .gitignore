@@ -131,3 +131,4 @@ dmypy.json
 # Databases
 .sqlite
 __pycache__
+db.sqlite
