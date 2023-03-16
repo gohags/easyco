@@ -21,3 +21,7 @@ ADD . /app
 WORKDIR /app
 RUN chmod +x django_start
 RUN chmod +x celery_start
+
+EXPOSE 80
+
+ENTRYPOINT [ "./django_start" ]
