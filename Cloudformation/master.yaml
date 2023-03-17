@@ -71,13 +71,13 @@ Resources:
         Path: /
         ECSServiceAutoScalingRoleARN: !GetAtt ECS.Outputs.ECSServiceAutoScalingRole
 
-  LifecycleHook:
-    Type: AWS::CloudFormation::Stack
-    Properties:
-      TemplateURL: https://easyerp-source-main.s3.amazonaws.com/Cloudformation/infrastructure/lifecyclehook.yaml
-      Parameters:
-        Cluster: !GetAtt ECS.Outputs.Cluster
-        ECSAutoScalingGroupName: !GetAtt ECS.Outputs.ECSAutoScalingGroupName
+  # LifecycleHook:
+  #   Type: AWS::CloudFormation::Stack
+  #   Properties:
+  #     TemplateURL: https://easyerp-source-main.s3.amazonaws.com/Cloudformation/infrastructure/lifecyclehook.yaml
+  #     Parameters:
+  #       Cluster: !GetAtt ECS.Outputs.Cluster
+  #       ECSAutoScalingGroupName: !GetAtt ECS.Outputs.ECSAutoScalingGroupName
 
 Outputs:
   ProductServiceUrl:
