@@ -65,8 +65,8 @@ Resources:
         VPC: !GetAtt VPC.Outputs.VPC
         Cluster: !GetAtt ECS.Outputs.Cluster
         DesiredCount: 2
-        ProductServiceUrl:
-          !Join ["/", [!GetAtt ALB.Outputs.LoadBalancerUrl, "products"]]
+        # ProductServiceUrl:
+        #   !Join ["/", [!GetAtt ALB.Outputs.LoadBalancerUrl, "products"]]
         Listener: !GetAtt ALB.Outputs.Listener
         Path: /
         ECSServiceAutoScalingRoleARN: !GetAtt ECS.Outputs.ECSServiceAutoScalingRole
