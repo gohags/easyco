@@ -21,9 +21,9 @@ Parameters:
     Type: Number
     Default: 3
 
-  ProductServiceUrl:
-    Description: The URL of the Product Service (used to fetch product information)
-    Type: String
+  # ProductServiceUrl:
+  #   Description: The URL of the Product Service (used to fetch product information)
+  #   Type: String
 
   Listener:
     Description: The Application Load Balancer listener to register with
