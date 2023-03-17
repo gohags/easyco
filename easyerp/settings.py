@@ -26,15 +26,15 @@ SECRET_KEY = os.environ.get("SECRET_KEY",'goijsoirtlb;aksdog0348utolijd')
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DEBUG') == True
+#DEBUG = os.environ.get('DEBUG') == True
+DEBUG = True
 ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS', '*').split(' ')
 
 
 # Application definition
 
 INSTALLED_APPS = [
-    'django_celery_beat',
-    'django_celery_results',
+    'default.apps.DefaultConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -58,7 +58,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'easyerp.urls'
 
-CSRF_TRUSTED_ORIGINS = ['http://*.awsdeepdive.xyz','https://*.awsdeepdive.xyz']
+CSRF_TRUSTED_ORIGINS = ['http://*.awsdeepdive.xyz','https://*.awsdeepdive.xyz','http://*.amazonaws.com','https://*.amazonaws.com']
 
 TEMPLATES = [
     {
@@ -122,7 +122,3 @@ STATIC_ROOT = '/home/ghost/static/'
 
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-
-CELERY_BROKER_URL = os.environ.get("CELERY_BROKER",'redis://127.0.0.1:6379')
-CELERY_RESULT_BACKEND = os.environ.get("CELERY_BACKEND",'redis://127.0.0.1:6379')
