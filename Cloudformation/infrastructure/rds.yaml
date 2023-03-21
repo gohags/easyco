@@ -795,6 +795,5 @@ Outputs:
     Description: Alias of the encryption key created for Amazon RDS.
     Value: !Ref EncryptionKeyAlias
   DBPassword:
-    Type: String
     Description: The database administrator account password.
     Value: !Ref DBPassword
