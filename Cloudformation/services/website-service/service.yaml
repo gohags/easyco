@@ -14,7 +14,7 @@ Parameters:
   DesiredCount:
     Description: How many instances of this task should we run across our cluster?
     Type: Number
-    Default: 2
+    Default: 1
 
   MaxCount:
     Description: Maximum number of instances of this task we can run across our cluster
