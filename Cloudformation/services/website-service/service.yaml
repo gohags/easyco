@@ -38,6 +38,26 @@ Parameters:
     Description: The ECS service auto scaling role ARN
     Type: String
 
+  DBNAME:
+    Description: Database name
+    Type: String
+
+  DBHOST:
+    Description: Database host
+    Type: String
+
+  DBPORT:
+    Description: Database port
+    Type: String
+
+  DBUSER:
+    Description: Database port
+    Type: String
+  
+  DBPASSWORD:
+    Description: Database port
+    Type: String
+
 Resources:
   Service:
     Type: AWS::ECS::Service
@@ -59,8 +79,19 @@ Resources:
       ContainerDefinitions:
         - Name: website-service
           Essential: true
-          Image: public.ecr.aws/q9b4q7d9/easyerp-public:latest
+          Image: 903452596466.dkr.ecr.us-east-1.amazonaws.com/easyerp:latest
           Memory: 128
+          Environment:
+            - Name: DBNAME
+              Value: !Ref DBNAME
+            - Name: DBHOST
+              Value: !Ref DBHOST
+            - Name: DBPORT
+              Value: !Ref DBPORT
+            - Name: DBUSER
+              Value: !Ref DBUSER
+            - Name: DBPASSWORD
+              Value: !Ref DBPASSWORD
           PortMappings:
             - ContainerPort: 80
           LogConfiguration:

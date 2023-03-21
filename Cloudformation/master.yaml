@@ -506,13 +506,12 @@ Resources:
   RDS:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL:
-          - https://aws-quickstart.s3.us-east-1.amazonaws.com/quickstart-amazon-rds-postgres/templates/postgres-entrypoint-existing-vpc.template.yaml
+      TemplateURL: https://easyerp-source-main.s3.amazonaws.com/Cloudformation/infrastructure/rds.yaml
       Parameters:
         Subnet1ID: !GetAtt VPC.Outputs.PrivateSubnet1
         Subnet2ID: !GetAtt VPC.Outputs.PrivateSubnet2
-        PublicSubnet1ID: VPC.Outputs.PublicSubnet1
-        PublicSubnet2ID: VPC.Outputs.PublicSubnet2
+        PublicSubnet1ID: !GetAtt VPC.Outputs.PublicSubnet1
+        PublicSubnet2ID: !GetAtt VPC.Outputs.PublicSubnet2
         VPCID: !GetAtt VPC.Outputs.VPC
         DBName: !Ref DBName
         DBAutoMinorVersionUpgrade: !Ref DBAutoMinorVersionUpgrade
@@ -564,57 +563,53 @@ Resources:
     Properties:
       ImageId: !Ref LatestAmiId
       InstanceType: t2.micro
+      KeyName: easyerp
       SubnetId: !GetAtt VPC.Outputs.PrivateSubnet1
       SecurityGroupIds:
         - !Ref BastionSecurityGroup
 
-  BastionEIP:
-    Type: AWS::EC2::EIP
+  ALB:
+    Type: AWS::CloudFormation::Stack
     Properties:
-      Domain: vpc
-      InstanceId: !Ref BastionInstance
-      Tags:
-        - Key: Name
-          Value: prod
+      TemplateURL: https://easyerp-source-main.s3.amazonaws.com/Cloudformation/infrastructure/load-balancers.yaml
+      Parameters:
+        EnvironmentName: !Ref AWS::StackName
+        VPC: !GetAtt VPC.Outputs.VPC
+        Subnets: !GetAtt VPC.Outputs.PublicSubnets
+        SecurityGroup: !GetAtt SecurityGroups.Outputs.LoadBalancerSecurityGroup
 
-  # ALB:
-  #   Type: AWS::CloudFormation::Stack
-  #   Properties:
-  #     TemplateURL: https://easyerp-source-main.s3.amazonaws.com/Cloudformation/infrastructure/load-balancers.yaml
-  #     Parameters:
-  #       EnvironmentName: !Ref AWS::StackName
-  #       VPC: !GetAtt VPC.Outputs.VPC
-  #       Subnets: !GetAtt VPC.Outputs.PublicSubnets
-  #       SecurityGroup: !GetAtt SecurityGroups.Outputs.LoadBalancerSecurityGroup
+  ECS:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: https://easyerp-source-main.s3.amazonaws.com/Cloudformation/infrastructure/ecs-cluster.yaml
+      Parameters:
+        EnvironmentName: !Ref AWS::StackName
+        InstanceType: t2.micro
+        ClusterSize: 4
+        VPC: !GetAtt VPC.Outputs.VPC
+        SecurityGroup: !GetAtt SecurityGroups.Outputs.ECSHostSecurityGroup
+        Subnets: !GetAtt VPC.Outputs.PrivateSubnets
 
-  # ECS:
-  #   Type: AWS::CloudFormation::Stack
-  #   Properties:
-  #     TemplateURL: https://easyerp-source-main.s3.amazonaws.com/Cloudformation/infrastructure/ecs-cluster.yaml
-  #     Parameters:
-  #       EnvironmentName: !Ref AWS::StackName
-  #       InstanceType: t2.micro
-  #       ClusterSize: 4
-  #       VPC: !GetAtt VPC.Outputs.VPC
-  #       SecurityGroup: !GetAtt SecurityGroups.Outputs.ECSHostSecurityGroup
-  #       Subnets: !GetAtt VPC.Outputs.PrivateSubnets
+  WebsiteService:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: https://easyerp-source-main.s3.amazonaws.com/Cloudformation/services/website-service/service.yaml
+      Parameters:
+        VPC: !GetAtt VPC.Outputs.VPC
+        Cluster: !GetAtt ECS.Outputs.Cluster
+        DesiredCount: 2
+        # ProductServiceUrl:
+        #   !Join ["/", [!GetAtt ALB.Outputs.LoadBalancerUrl, "products"]]
+        Listener: !GetAtt ALB.Outputs.Listener
+        Path: /
+        ECSServiceAutoScalingRoleARN: !GetAtt ECS.Outputs.ECSServiceAutoScalingRole
+        DBNAME: !GetAtt RDS.Outputs.DBName
+        DBHOST: !GetAtt RDS.Outputs.RDSEndPointAddress
+        DBPORT: !GetAtt RDS.Outputs.RDSEndPointPort
+        DBUSER: !GetAtt RDS.Outputs.DBUsername
+        DBPASSWORD: !GetAtt RDS.Outputs.DBPassword
 
-  # WebsiteService:
-  #   Type: AWS::CloudFormation::Stack
-  #   Properties:
-  #     TemplateURL: https://easyerp-source-main.s3.amazonaws.com/Cloudformation/services/website-service/service.yaml
-  #     Parameters:
-  #       VPC: !GetAtt VPC.Outputs.VPC
-  #       Cluster: !GetAtt ECS.Outputs.Cluster
-  #       DesiredCount: 2
-  #       # ProductServiceUrl:
-  #       #   !Join ["/", [!GetAtt ALB.Outputs.LoadBalancerUrl, "products"]]
-  #       Listener: !GetAtt ALB.Outputs.Listener
-  #       Path: /
-  #       ECSServiceAutoScalingRoleARN: !GetAtt ECS.Outputs.ECSServiceAutoScalingRole
-
-# Outputs:
-#   WebsiteServiceUrl:
-#     Description: The URL endpoint for the website service
-#     Value: !Join ["", [!GetAtt ALB.Outputs.LoadBalancerUrl, "/"]]
- 
+Outputs:
+  WebsiteServiceUrl:
+    Description: The URL endpoint for the website service
+    Value: !Join ["", [!GetAtt ALB.Outputs.LoadBalancerUrl, "/"]]
