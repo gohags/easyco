@@ -12,7 +12,17 @@ Parameters:
     Type: String
     Default: t2.micro
 
-  ClusterSize:
+  ClusterSizeMin:
+    Description: How many ECS hosts do you want to initially deploy?
+    Type: Number
+    Default: 1
+
+  ClusterSizeMax:
+    Description: How many ECS hosts do you want to initially deploy?
+    Type: Number
+    Default: 4
+
+  ClusterSizeDes:
     Description: How many ECS hosts do you want to initially deploy?
     Type: Number
     Default: 2
@@ -46,9 +56,9 @@ Resources:
     Properties:
       VPCZoneIdentifier: !Ref Subnets
       LaunchConfigurationName: !Ref ECSLaunchConfiguration
-      MinSize: !Ref ClusterSize
-      MaxSize: !Ref ClusterSize
-      DesiredCapacity: !Ref ClusterSize
+      MinSize: !Ref ClusterSizeMin
+      MaxSize: !Ref ClusterSizeMax
+      DesiredCapacity: !Ref ClusterSizeDes
       Tags:
         - Key: Name
           Value: !Sub ${EnvironmentName} ECS host
@@ -59,7 +69,7 @@ Resources:
     UpdatePolicy:
       AutoScalingRollingUpdate:
         MinInstancesInService: 1
-        MaxBatchSize: 1
+        MaxBatchSize: 3
         PauseTime: PT15M
         SuspendProcesses:
           - HealthCheck
