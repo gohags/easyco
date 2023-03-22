@@ -598,10 +598,11 @@ Resources:
       Parameters:
         VPC: !GetAtt VPC.Outputs.VPC
         Cluster: !GetAtt ECS.Outputs.Cluster
-        DesiredCount: 1
+        DesiredCount: 2
         # ProductServiceUrl:
         #   !Join ["/", [!GetAtt ALB.Outputs.LoadBalancerUrl, "products"]]
         Listener: !GetAtt ALB.Outputs.Listener
+        TargetGroup: !GetAtt ALB.Outputs.DefaultTargetGroup
         Path: /
         ECSServiceAutoScalingRoleARN: !GetAtt ECS.Outputs.ECSServiceAutoScalingRole
         DBNAME: !GetAtt RDS.Outputs.DBName
