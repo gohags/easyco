@@ -58,7 +58,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'easyerp.urls'
 
-CSRF_TRUSTED_ORIGINS = ['http://*.awsdeepdive.xyz','https://*.awsdeepdive.xyz','http://*.amazonaws.com','https://*.amazonaws.com']
+CSRF_TRUSTED_ORIGINS = ['http://*.awsdd.xyz','https://*.awsdd.xyz','http://*.amazonaws.com','https://*.amazonaws.com']
 
 TEMPLATES = [
     {
