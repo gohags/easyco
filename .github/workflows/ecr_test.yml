@@ -29,3 +29,7 @@ jobs:
           region: us-east-1
           local-image: easyerp:prod-${{ github.sha }}
           image: easyerp:prod-${{ github.sha }}, easyerp:latest
+          
+      - name: Force deployment
+        run: |
+          aws ecs update-service --cluster easyerp --service easyerp --force-new-deployment
