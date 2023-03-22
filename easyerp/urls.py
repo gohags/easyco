@@ -20,7 +20,7 @@ from django.conf.urls.static import static
 from django.views.static import serve
 
 urlpatterns = [
-    path('', admin.site.urls),
-    path('test/',include('default.urls')),
+    path('admin/', admin.site.urls),
+    path('',include('default.urls')),
     re_path(r'^static/(?P<path>.*)$', serve,{'document_root': settings.STATIC_ROOT}),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
