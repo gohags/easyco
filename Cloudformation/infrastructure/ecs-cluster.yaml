@@ -15,12 +15,17 @@ Parameters:
   ClusterSizeMin:
     Description: How many ECS hosts do you want to initially deploy?
     Type: Number
-    Default: 2
+    Default: 1
 
   ClusterSizeMax:
     Description: How many ECS hosts do you want to initially deploy?
     Type: Number
     Default: 4
+
+  ClusterSizeDes:
+    Description: How many ECS hosts do you want to initially deploy?
+    Type: Number
+    Default: 2
 
   VPC:
     Description: Choose which VPC this ECS cluster should be deployed to
@@ -53,7 +58,7 @@ Resources:
       LaunchConfigurationName: !Ref ECSLaunchConfiguration
       MinSize: !Ref ClusterSizeMin
       MaxSize: !Ref ClusterSizeMax
-      DesiredCapacity: !Ref ClusterSize
+      DesiredCapacity: !Ref ClusterSizeDes
       Tags:
         - Key: Name
           Value: !Sub ${EnvironmentName} ECS host
