@@ -31,7 +31,7 @@ Parameters:
 
   TargetGroup:
     Description: TTarget group to register
-    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Type: String
 
   Path:
     Description: The path to register with the Application Load Balancer
