@@ -80,7 +80,7 @@ Resources:
         - Name: website-service
           Essential: true
           Image: 903452596466.dkr.ecr.us-east-1.amazonaws.com/easyerp:latest
-          Memory: 128
+          Memory: 500
           Environment:
             - Name: DBNAME
               Value: !Ref DBNAME
