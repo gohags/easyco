@@ -76,24 +76,27 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'easyerp.wsgi.application'
+env = os.environ.get('DEVENV','no')
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.environ.get("DBNAME",''), 
-        'USER': os.environ.get("DBUSER",''), 
-        'PASSWORD': os.environ.get("DBPASSWORD",''), 
-        'HOST': os.environ.get("DBHOST",''), 
-        'PORT': os.environ.get("DBPORT",''), 
+DATABASES={}
+if env == 'no':
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': os.environ.get("DBNAME",''), 
+            'USER': os.environ.get("DBUSER",''), 
+            'PASSWORD': os.environ.get("DBPASSWORD",''), 
+            'HOST': os.environ.get("DBHOST",''), 
+            'PORT': os.environ.get("DBPORT",''), 
+        }
     }
-}
-
-# DATABASES = { 'default':
-#     {
-#         'ENGINE':'django.db.backends.sqlite3',
-#         'NAME':os.getenv('DB_PATH', BASE_DIR / 'db.sqlite'),
-#     }
-# }
+else:
+    DATABASES = { 'default':
+        {
+            'ENGINE':'django.db.backends.sqlite3',
+            'NAME':os.getenv('DB_PATH', BASE_DIR / 'db.sqlite'),
+        }
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
