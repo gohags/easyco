@@ -3,6 +3,10 @@ Description: >
   via it's load balancer. We use environment variables to pass the URL of the product-service to this one's container(s).
 
 Parameters:
+  EnvironmentName:
+    Description: An environment name that will be prefixed to resource names
+    Type: String
+
   VPC:
     Description: The VPC that the ECS cluster is deployed to
     Type: AWS::EC2::VPC::Id
@@ -67,21 +71,22 @@ Resources:
     Type: AWS::ECS::Service
     DependsOn: ListenerRule
     Properties:
+      ServiceName: !Ref EnvironmentName
       Cluster: !Ref Cluster
       Role: !Ref ServiceRole
       DesiredCount: !Ref DesiredCount
       TaskDefinition: !Ref TaskDefinition
       LoadBalancers:
-        - ContainerName: "website-service"
+        - ContainerName: !Ref EnvironmentName
           ContainerPort: 80
           TargetGroupArn: !Ref TargetGroup
 
   TaskDefinition:
     Type: AWS::ECS::TaskDefinition
     Properties:
-      Family: website-service
+      Family: !Ref EnvironmentName
       ContainerDefinitions:
-        - Name: website-service
+        - Name: !Ref EnvironmentName
           Essential: true
           Image: 903452596466.dkr.ecr.us-east-1.amazonaws.com/easyerp:latest
           Memory: 1024

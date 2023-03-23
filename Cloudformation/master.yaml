@@ -591,11 +591,12 @@ Resources:
         SecurityGroup: !GetAtt SecurityGroups.Outputs.ECSHostSecurityGroup
         Subnets: !GetAtt VPC.Outputs.PrivateSubnets
 
-  WebsiteService:
+  EasyerpService:
     Type: AWS::CloudFormation::Stack
     Properties:
       TemplateURL: https://easyerp-source-main.s3.amazonaws.com/Cloudformation/services/website-service/service.yaml
       Parameters:
+        EnvironmentName: !Ref AWS::StackName
         VPC: !GetAtt VPC.Outputs.VPC
         Cluster: !GetAtt ECS.Outputs.Cluster
         DesiredCount: 2
