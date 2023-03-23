@@ -1,4 +1,4 @@
-name: Deploy Prod
+name: Deploy Stage
 on:
   push:
     branches: ["stage"]
