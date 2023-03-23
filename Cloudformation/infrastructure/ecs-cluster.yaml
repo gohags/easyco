@@ -69,7 +69,7 @@ Resources:
     UpdatePolicy:
       AutoScalingRollingUpdate:
         MinInstancesInService: 1
-        MaxBatchSize: 3
+        MaxBatchSize: 2
         PauseTime: PT15M
         SuspendProcesses:
           - HealthCheck
