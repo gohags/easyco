@@ -4,7 +4,9 @@ set -o errexit
 set -o pipefail
 set -o nounset
 
-[ -d "/metrics" ] && echo "/metrics directory exists so empty it" && rm /metrics/* || echo "/metrics directory does not exist so do nothing"
 python3 manage.py migrate
 python3 manage.py collectstatic --noinput
-gunicorn --preload --worker-class=gevent --worker-connections=$WORKER_CONNECTIONS --workers=$NUM_WORKERS --bind 0.0.0.0:8000 easyerp.wsgi:application
+
+echo "from django.contrib.auth.models import User; User.objects.filter(username='admin').exists() or User.objects.create_superuser('admin', 'admin@ftkuhnsman.com', 'password')" | python3 manage.py shell
+
+gunicorn --preload --worker-class=gevent --worker-connections=200 --workers=1 --bind 0.0.0.0:80 easyerp.wsgi:application
