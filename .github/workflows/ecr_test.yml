@@ -17,7 +17,6 @@ jobs:
         with:
           fetch-depth: 0
           ref: main
-      - uses: satackey/action-docker-layer-caching@v0.0.11
       
       - run: docker build --tag easyerp:prod-${{ github.sha }} .
       - name: Push to ECR
@@ -30,6 +29,10 @@ jobs:
           local-image: easyerp:prod-${{ github.sha }}
           image: easyerp:prod-${{ github.sha }}, easyerp:latest
           
-      - name: Force deployment
-        run: |
-          aws ecs update-service --cluster easyerp --service easyerp --force-new-deployment
+      - uses: chrislennon/action-aws-cli@v1.1
+        # All commands after this point have access to the AWS CLI
+      - run: aws ecs update-service --cluster easyerp --service easyerp --force-new-deployment
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          
