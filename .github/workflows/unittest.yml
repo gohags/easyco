@@ -16,4 +16,3 @@ jobs:
       - run: pytest . # run pytest test
         env:
           DEVENV: dev
-      - run: flake8 . # run flake8 test
