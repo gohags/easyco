@@ -35,6 +35,7 @@ ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS', '*').split(' ')
 
 INSTALLED_APPS = [
     'default.apps.DefaultConfig',
+    'GL.apps.GlConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -45,7 +46,6 @@ INSTALLED_APPS = [
 
 
 MIDDLEWARE = [
-    'django_prometheus.middleware.PrometheusBeforeMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -53,12 +53,11 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django_prometheus.middleware.PrometheusAfterMiddleware',
 ]
 
 ROOT_URLCONF = 'easyerp.urls'
 
-CSRF_TRUSTED_ORIGINS = ['http://*.awsdeepdive.xyz','https://*.awsdeepdive.xyz','http://*.amazonaws.com','https://*.amazonaws.com']
+CSRF_TRUSTED_ORIGINS = ['http://*.awsdd.xyz','https://*.awsdd.xyz','http://*.amazonaws.com','https://*.amazonaws.com']
 
 TEMPLATES = [
     {
@@ -77,24 +76,27 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'easyerp.wsgi.application'
+env = os.environ.get('DEVENV','no')
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.environ.get("DBNAME",''), 
-        'USER': os.environ.get("DBUSER",''), 
-        'PASSWORD': os.environ.get("DBPASSWORD",''), 
-        'HOST': os.environ.get("DBHOST",''), 
-        'PORT': os.environ.get("DBPORT",''), 
+DATABASES={}
+if env == 'no':
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': os.environ.get("DBNAME",''), 
+            'USER': os.environ.get("DBUSER",''), 
+            'PASSWORD': os.environ.get("DBPASSWORD",''), 
+            'HOST': os.environ.get("DBHOST",''), 
+            'PORT': os.environ.get("DBPORT",''), 
+        }
     }
-}
-
-# DATABASES = { 'default':
-#     {
-#         'ENGINE':'django.db.backends.sqlite3',
-#         'NAME':os.getenv('DB_PATH', BASE_DIR / 'db.sqlite'),
-#     }
-# }
+else:
+    DATABASES = { 'default':
+        {
+            'ENGINE':'django.db.backends.sqlite3',
+            'NAME':os.getenv('DB_PATH', BASE_DIR / 'db.sqlite'),
+        }
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -128,6 +130,9 @@ USE_L10N = True
 
 USE_TZ = True
 
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
 STATIC_URL = 'static/'
 STATIC_ROOT = '/home/ghost/static/'
 
