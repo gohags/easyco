@@ -207,7 +207,7 @@ Resources:
       ScalingTargetId: !Ref ServiceScalableTarget
       StepScalingPolicyConfiguration:
         AdjustmentType: ChangeInCapacity
-        Cooldown: 1800
+        Cooldown: 300
         MetricAggregationType: Average
         StepAdjustments:
           - MetricIntervalUpperBound: 0
