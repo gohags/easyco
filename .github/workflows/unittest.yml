@@ -1,5 +1,5 @@
 name: Unit Test
-on: [pull_request, push] # activates the workflow when there is a push or pull request in the repo
+on: [pull_request] # activates the workflow when there is a push or pull request in the repo
 jobs:
   test_project:
     runs-on: ubuntu-latest # operating system your code will run on
@@ -11,7 +11,6 @@ jobs:
       - run: sudo apt-get install build-essential libssl-dev libffi-dev python3.11-dev
       - run: pip install --upgrade pip
       - run: pip install pycryptodome
-      - run: pip install flake8
       - run: pip install -r requirements.txt #--use-pep517 # install all our dependencies for the project
       - run: pytest . # run pytest test
         env:
