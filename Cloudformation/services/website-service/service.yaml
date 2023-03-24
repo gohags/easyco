@@ -102,6 +102,8 @@ Resources:
               Value: !Ref DBUSER
             - Name: DBPASSWORD
               Value: !Ref DBPASSWORD
+            - Name: DEVENV
+              Value: "no"
           PortMappings:
             - ContainerPort: 80
           LogConfiguration:
