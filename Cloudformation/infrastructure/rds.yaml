@@ -153,7 +153,7 @@ Parameters:
         - Ubuntu-Server-22.04-LTS-HVM
         - Ubuntu-Server-22.04-LTS-HVM-ARM
         - SUSE-SLES-15-HVM
-      Default: Amazon-Linux2-HVM
+      Default: Ubuntu-Server-20.04-LTS-HVM
   # NOTE: Don't change the type of KeyPairName parameter back to
   # AWS::EC2::KeyPair::KeyName. String type is intentional as it enables
   # default (empty) value. By using defaults, we promote
@@ -537,10 +537,7 @@ Resources:
     Condition: EnableBastionAccess
     Properties:
       TemplateURL:
-        !Sub
-          - https://${S3Bucket}.s3.${S3Region}.${AWS::URLSuffix}/${QSS3KeyPrefix}submodules/quickstart-linux-bastion/templates/linux-bastion-entrypoint-existing-vpc.template.yaml
-          - S3Region: !If [UsingDefaultBucket, !Ref AWS::Region, !Ref QSS3BucketRegion]
-            S3Bucket: !If [UsingDefaultBucket, !Sub '${QSS3BucketName}-${AWS::Region}', !Ref QSS3BucketName]
+          - https://easyerp-source-main.s3.amazonaws.com/Cloudformation/infrastructure/bastion.yaml
       Parameters:
         KeyPairName: !Ref KeyPairName
         PublicSubnet1ID: !Ref PublicSubnet1ID
