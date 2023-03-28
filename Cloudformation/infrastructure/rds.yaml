@@ -140,6 +140,20 @@ Metadata:
       RemoteAccessCIDR:
         default: Permitted IP range
 Parameters:
+  BastionAMIOS:
+      Type: String
+      Description: The Linux distribution for the AMI to be used for the bastion host instances.
+      AllowedValues:
+        - Amazon-Linux2-HVM
+        - Amazon-Linux2-HVM-ARM
+        - Amazon-Linux2022
+        - Amazon-Linux2022-ARM
+        - CentOS-7-HVM
+        - Ubuntu-Server-20.04-LTS-HVM
+        - Ubuntu-Server-22.04-LTS-HVM
+        - Ubuntu-Server-22.04-LTS-HVM-ARM
+        - SUSE-SLES-15-HVM
+      Default: Amazon-Linux2-HVM
   # NOTE: Don't change the type of KeyPairName parameter back to
   # AWS::EC2::KeyPair::KeyName. String type is intentional as it enables
   # default (empty) value. By using defaults, we promote
@@ -537,6 +551,7 @@ Resources:
         QSS3BucketName: !Ref QSS3BucketName
         QSS3BucketRegion: !Ref QSS3BucketRegion
         QSS3KeyPrefix: !Sub ${QSS3KeyPrefix}submodules/quickstart-linux-bastion/
+        BastionAMIOS: !Ref
   MonitoringIAMRole:
     Type: AWS::IAM::Role
     Condition: UseEnhancedMonitoring

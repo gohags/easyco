@@ -508,6 +508,7 @@ Resources:
         PublicSubnet2CIDR: !Ref PublicSubnet2CIDR
         PrivateSubnet1CIDR: !Ref PrivateSubnet1CIDR
         PrivateSubnet2CIDR: !Ref PrivateSubnet2CIDR
+        BastionAMIOS: !Ref BastionAMIOS
 
   SecurityGroups:
     Type: AWS::CloudFormation::Stack
