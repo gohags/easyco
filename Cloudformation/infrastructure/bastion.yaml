@@ -159,7 +159,7 @@ Parameters:
     Type: String
     Description: Choose "true" to enable TCP forwarding.
     AllowedValues: ['true', 'false']
-    Default: 'false'
+    Default: 'true'
   EnableX11Forwarding:
     Type: String
     Description: Choose "true" to enable X11 forwarding.
@@ -949,8 +949,8 @@ Resources:
               done
               export PATH=$PATH:/usr/local/bin
               yum install -y git unzip wget curl || apt-get install -y git unzip wget curl || zypper -n install git unzip wget curl
+              apt-get install -y socat
 
-              sudo head -n -2 /etc/ssh/sshd_config > tmp.txt && sudo mv tmp.txt /etc/ssh/sshd_config
 
               #cfn signaling functions
               cfn_fail() {
@@ -992,11 +992,10 @@ Resources:
 
               EIP_LIST="${EIP1},${EIP2},${EIP3},${EIP4}"
               CLOUDWATCHGROUP=${BastionMainLogGroup}
-              
-              
               cfn-init -v --stack '${AWS::StackName}' --resource BastionLaunchTemplate --region ${AWS::Region} || cfn_fail
               [ $(qs_status) == 0 ] && cfn_success || cfn_fail
-
+              
+              socat TCP-LISTEN:5432,reuseaddr,fork, TCP4:${RDSEndPointAddress}:5432
             - EIP1: !If [NeedsEip, !Ref EIP1, 'Null']
               EIP2: !If [2BastionCondition, !Ref EIP2, 'Null']
               EIP3: !If [3BastionCondition, !Ref EIP3, 'Null']

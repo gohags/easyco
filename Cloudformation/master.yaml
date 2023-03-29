@@ -307,7 +307,7 @@ Parameters:
     Type: String
     Description: Choose 'true' to enable TCP forwarding.
     AllowedValues: ['true', 'false']
-    Default: 'false'
+    Default: 'true'
   DBAutoMinorVersionUpgrade:
     Type: String
     Description: Choose 'true' to set up auto minor version upgrade.
