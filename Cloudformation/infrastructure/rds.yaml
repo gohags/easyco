@@ -532,23 +532,6 @@ Conditions:
   EnableDBLogExport: !Equals [!Ref DBExportLogToCloudwatch, 'true']
   CreateSecurityGroup: !Equals [!Ref CustomDBSecurityGroup, '']
 Resources:
-  BastionStack:
-    Type: AWS::CloudFormation::Stack
-    Condition: EnableBastionAccess
-    Properties:
-      TemplateURL:
-          - https://easyerp-source-main.s3.amazonaws.com/Cloudformation/infrastructure/bastion.yaml
-      Parameters:
-        KeyPairName: !Ref KeyPairName
-        PublicSubnet1ID: !Ref PublicSubnet1ID
-        PublicSubnet2ID: !Ref PublicSubnet2ID
-        EnableTCPForwarding: !Ref EnableTCPForwarding
-        RemoteAccessCIDR: !Ref RemoteAccessCIDR
-        VPCID: !Ref VPCID
-        QSS3BucketName: !Ref QSS3BucketName
-        QSS3BucketRegion: !Ref QSS3BucketRegion
-        QSS3KeyPrefix: !Sub ${QSS3KeyPrefix}submodules/quickstart-linux-bastion/
-        BastionAMIOS: !Ref
   MonitoringIAMRole:
     Type: AWS::IAM::Role
     Condition: UseEnhancedMonitoring

@@ -286,6 +286,9 @@ Parameters:
       bootstrapping. Variables must be in the format "key=value". "Value" cannot
       contain commas.
     Default: ''
+  RDSEndPointAddress:
+    Type: String
+    Default: ''
   RootVolumeSize:
     Type: Number
     Description: The size in GB for the root EBS volume.
@@ -946,16 +949,22 @@ Resources:
               done
               export PATH=$PATH:/usr/local/bin
               yum install -y git unzip wget curl || apt-get install -y git unzip wget curl || zypper -n install git unzip wget curl
+
+              sudo head -n -2 /etc/ssh/sshd_config > tmp.txt && sudo mv tmp.txt /etc/ssh/sshd_config
+
               #cfn signaling functions
               cfn_fail() {
                 cfn-signal -e 1 --stack ${AWS::StackName} --region ${AWS::Region} --resource BastionAutoScalingGroup
                 exit 1
               }
+
               cfn_success() {
                 cfn-signal -e 0 --stack ${AWS::StackName} --region ${AWS::Region} --resource BastionAutoScalingGroup
                 exit 0
               }
+
               pushd /tmp
+
               if [[ "a$(which aws)" == "a" ]]
               then
                 echo "Installing AWS CLI..."
@@ -964,6 +973,7 @@ Resources:
                 unzip -q ./awscliv2.zip
                 ./aws/install
               fi
+
               for (( i=0; i<=5; i++ ))
               do
                 aws s3 cp --no-progress --region ${AWS::Region} "s3://${S3Bucket}/${QSS3KeyPrefix}scripts/cfn-tools.sh" .
@@ -973,14 +983,20 @@ Resources:
                 fi
               done
               source ./cfn-tools.sh
+
               popd /tmp
+
               qs_update-os || qs_err;
               qs_bootstrap_pip || qs_err " pip bootstrap failed ";
               qs_aws-cfn-bootstrap || qs_err " cfn bootstrap failed ";
+
               EIP_LIST="${EIP1},${EIP2},${EIP3},${EIP4}"
               CLOUDWATCHGROUP=${BastionMainLogGroup}
+              
+              
               cfn-init -v --stack '${AWS::StackName}' --resource BastionLaunchTemplate --region ${AWS::Region} || cfn_fail
               [ $(qs_status) == 0 ] && cfn_success || cfn_fail
+
             - EIP1: !If [NeedsEip, !Ref EIP1, 'Null']
               EIP2: !If [2BastionCondition, !Ref EIP2, 'Null']
               EIP3: !If [3BastionCondition, !Ref EIP3, 'Null']

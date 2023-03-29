@@ -171,7 +171,7 @@ Parameters:
         - Ubuntu-Server-22.04-LTS-HVM
         - Ubuntu-Server-22.04-LTS-HVM-ARM
         - SUSE-SLES-15-HVM
-      Default: Amazon-Linux2-HVM
+      Default: Ubuntu-Server-20.04-LTS-HVM
   AvailabilityZones:
    Type: List<AWS::EC2::AvailabilityZone::Name>
    Description: >-
@@ -496,6 +496,8 @@ Parameters:
   LatestAmiId:
     Type: 'AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>'
     Default: '/aws/service/canonical/ubuntu/server/jammy/stable/current/amd64/hvm/ebs-gp2/ami-id'
+Conditions:
+  EnableBastionAccess: !Equals [!Ref EnableBastion, 'true']
 
 Resources:
   VPC:
@@ -518,7 +520,23 @@ Resources:
       Parameters:
         EnvironmentName: !Ref AWS::StackName
         VPC: !GetAtt VPC.Outputs.VPC
-
+  BastionStack:
+    Type: AWS::CloudFormation::Stack
+    Condition: EnableBastionAccess
+    Properties:
+      TemplateURL: https://easyerp-source-main.s3.amazonaws.com/Cloudformation/infrastructure/bastion.yaml
+      Parameters:
+        KeyPairName: !Ref KeyPairName
+        PublicSubnet1ID: !GetAtt VPC.Outputs.PublicSubnet1
+        PublicSubnet2ID: !GetAtt VPC.Outputs.PublicSubnet2
+        EnableTCPForwarding: !Ref EnableTCPForwarding
+        RemoteAccessCIDR: !Ref RemoteAccessCIDR
+        VPCID: !GetAtt VPC.Outputs.VPC
+        QSS3BucketName: !Ref QSS3BucketName
+        QSS3BucketRegion: !Ref QSS3BucketRegion
+        QSS3KeyPrefix: !Sub ${QSS3KeyPrefix}submodules/quickstart-linux-bastion/
+        BastionAMIOS: !Ref BastionAMIOS
+        RDSEndPointAddress: !GetAtt RDS.Outputs.RDSEndPointAddress
   RDS:
     Type: AWS::CloudFormation::Stack
     Properties:
