@@ -31,6 +31,7 @@ Metadata:
       - Label:
           default: Linux bastion configuration
         Parameters:
+          - BastionAMIOS
           - EnableBastion
           - KeyPairName
           - RemoteAccessCIDR
@@ -157,6 +158,20 @@ Metadata:
 
 
 Parameters:
+  BastionAMIOS:
+      Type: String
+      Description: The Linux distribution for the AMI to be used for the bastion host instances.
+      AllowedValues:
+        - Amazon-Linux2-HVM
+        - Amazon-Linux2-HVM-ARM
+        - Amazon-Linux2022
+        - Amazon-Linux2022-ARM
+        - CentOS-7-HVM
+        - Ubuntu-Server-20.04-LTS-HVM
+        - Ubuntu-Server-22.04-LTS-HVM
+        - Ubuntu-Server-22.04-LTS-HVM-ARM
+        - SUSE-SLES-15-HVM
+      Default: Ubuntu-Server-20.04-LTS-HVM
   AvailabilityZones:
    Type: List<AWS::EC2::AvailabilityZone::Name>
    Description: >-
@@ -292,7 +307,7 @@ Parameters:
     Type: String
     Description: Choose 'true' to enable TCP forwarding.
     AllowedValues: ['true', 'false']
-    Default: 'false'
+    Default: 'true'
   DBAutoMinorVersionUpgrade:
     Type: String
     Description: Choose 'true' to set up auto minor version upgrade.
@@ -481,6 +496,8 @@ Parameters:
   LatestAmiId:
     Type: 'AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>'
     Default: '/aws/service/canonical/ubuntu/server/jammy/stable/current/amd64/hvm/ebs-gp2/ami-id'
+Conditions:
+  EnableBastionAccess: !Equals [!Ref EnableBastion, 'true']
 
 Resources:
   VPC:
@@ -494,6 +511,7 @@ Resources:
         PublicSubnet2CIDR: !Ref PublicSubnet2CIDR
         PrivateSubnet1CIDR: !Ref PrivateSubnet1CIDR
         PrivateSubnet2CIDR: !Ref PrivateSubnet2CIDR
+        
 
   SecurityGroups:
     Type: AWS::CloudFormation::Stack
@@ -502,7 +520,23 @@ Resources:
       Parameters:
         EnvironmentName: !Ref AWS::StackName
         VPC: !GetAtt VPC.Outputs.VPC
-
+  BastionStack:
+    Type: AWS::CloudFormation::Stack
+    Condition: EnableBastionAccess
+    Properties:
+      TemplateURL: https://easyerp-source-main.s3.amazonaws.com/Cloudformation/infrastructure/bastion.yaml
+      Parameters:
+        KeyPairName: !Ref KeyPairName
+        PublicSubnet1ID: !GetAtt VPC.Outputs.PublicSubnet1
+        PublicSubnet2ID: !GetAtt VPC.Outputs.PublicSubnet2
+        EnableTCPForwarding: !Ref EnableTCPForwarding
+        RemoteAccessCIDR: !Ref RemoteAccessCIDR
+        VPCID: !GetAtt VPC.Outputs.VPC
+        QSS3BucketName: !Ref QSS3BucketName
+        QSS3BucketRegion: !Ref QSS3BucketRegion
+        QSS3KeyPrefix: !Sub ${QSS3KeyPrefix}submodules/quickstart-linux-bastion/
+        BastionAMIOS: !Ref BastionAMIOS
+        RDSEndPointAddress: !GetAtt RDS.Outputs.RDSEndPointAddress
   RDS:
     Type: AWS::CloudFormation::Stack
     Properties:
@@ -546,6 +580,7 @@ Resources:
         QSS3BucketName: !Ref QSS3BucketName
         QSS3BucketRegion: !Ref QSS3BucketRegion
         QSS3KeyPrefix: !Ref QSS3KeyPrefix
+        BastionAMIOS: !Ref BastionAMIOS
 
   # BastionSecurityGroup:
   #   Type: AWS::EC2::SecurityGroup
