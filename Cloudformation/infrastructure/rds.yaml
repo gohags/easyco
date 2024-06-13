@@ -223,8 +223,8 @@ Parameters:
     Type: String
     Description: Select database engine version.
     AllowedValues:
-      - 16.3-R1
-    Default: 16.3-R1
+      - 16.3
+    Default: 16.3
   DBInstanceClass:
     Type: String
     Description: >-
