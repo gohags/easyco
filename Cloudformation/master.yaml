@@ -503,7 +503,7 @@ Resources:
   VPC:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: https://easyerp-source-main.s3.amazonaws.com/Cloudformation/infrastructure/vpc.yaml
+      TemplateURL: https://easyerp-repo.s3.amazonaws.com/Cloudformation/infrastructure/vpc.yaml
       Parameters:
         EnvironmentName: !Ref AWS::StackName
         VpcCIDR: !Ref VPCCIDR
@@ -516,7 +516,7 @@ Resources:
   SecurityGroups:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: https://easyerp-source-main.s3.amazonaws.com/Cloudformation/infrastructure/security-groups.yaml
+      TemplateURL: https://easyerp-repo.s3.amazonaws.com/Cloudformation/infrastructure/security-groups.yaml
       Parameters:
         EnvironmentName: !Ref AWS::StackName
         VPC: !GetAtt VPC.Outputs.VPC
@@ -524,7 +524,7 @@ Resources:
     Type: AWS::CloudFormation::Stack
     Condition: EnableBastionAccess
     Properties:
-      TemplateURL: https://easyerp-source-main.s3.amazonaws.com/Cloudformation/infrastructure/bastion.yaml
+      TemplateURL: https://easyerp-repo.s3.amazonaws.com/Cloudformation/infrastructure/bastion.yaml
       Parameters:
         KeyPairName: !Ref KeyPairName
         PublicSubnet1ID: !GetAtt VPC.Outputs.PublicSubnet1
@@ -540,7 +540,7 @@ Resources:
   RDS:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: https://easyerp-source-main.s3.amazonaws.com/Cloudformation/infrastructure/rds.yaml
+      TemplateURL: https://easyerp-repo.s3.amazonaws.com/Cloudformation/infrastructure/rds.yaml
       Parameters:
         Subnet1ID: !GetAtt VPC.Outputs.PrivateSubnet1
         Subnet2ID: !GetAtt VPC.Outputs.PrivateSubnet2
@@ -606,7 +606,7 @@ Resources:
   ALB:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: https://easyerp-source-main.s3.amazonaws.com/Cloudformation/infrastructure/load-balancers.yaml
+      TemplateURL: https://easyerp-repo.s3.amazonaws.com/Cloudformation/infrastructure/load-balancers.yaml
       Parameters:
         EnvironmentName: !Ref AWS::StackName
         VPC: !GetAtt VPC.Outputs.VPC
@@ -616,7 +616,7 @@ Resources:
   ECS:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: https://easyerp-source-main.s3.amazonaws.com/Cloudformation/infrastructure/ecs-cluster.yaml
+      TemplateURL: https://easyerp-repo.s3.amazonaws.com/Cloudformation/infrastructure/ecs-cluster.yaml
       Parameters:
         EnvironmentName: !Ref AWS::StackName
         InstanceType: t3.medium
@@ -629,7 +629,7 @@ Resources:
   EasyerpService:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: https://easyerp-source-main.s3.amazonaws.com/Cloudformation/services/website-service/service.yaml
+      TemplateURL: https://easyerp-repo.s3.amazonaws.com/Cloudformation/services/website-service/service.yaml
       Parameters:
         EnvironmentName: !Ref AWS::StackName
         VPC: !GetAtt VPC.Outputs.VPC
