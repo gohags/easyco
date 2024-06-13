@@ -331,7 +331,8 @@ Parameters:
   DBEngineVersion:
     Type: String
     Description: Select database engine version.
-    AllowedValues: ['16.3-R1']
+    AllowedValues:
+      - 16.3-R1
     Default: 16.3-R1
   DBInstanceClass:
     Type: String
