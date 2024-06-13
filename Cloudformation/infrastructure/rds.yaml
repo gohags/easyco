@@ -223,36 +223,31 @@ Parameters:
     Type: String
     Description: Choose database engine version.
     AllowedValues:
-      - 10.17
-      - 10.18
-      - 10.19
-      - 10.20
-      - 10.21
-      - 10.22
-      - 11.12
-      - 11.13
-      - 11.14
-      - 11.15
       - 11.16
       - 11.17
-      - 12.7
-      - 12.8
-      - 12.9
-      - 12.10
+      - 11.18
+      - 11.19
+      - 11.2
       - 12.11
       - 12.12
-      - 13.3
-      - 13.4
-      - 13.5
-      - 13.6
+      - 12.13
+      - 12.14
+      - 12.15
       - 13.7
       - 13.8
-      - 14.1
-      - 14.2
+      - 13.9
+      - 13.1
+      - 13.11
       - 14.3
       - 14.4
       - 14.5
-    Default: 14.5
+      - 14.6
+      - 14.7
+      - 14.8
+      - 15.2
+      - 15.3
+      - 15.4
+    Default: 15.4
   DBInstanceClass:
     Type: String
     Description: >-
@@ -372,7 +367,7 @@ Parameters:
       The Quick Start bucket name can include numbers, lowercase
       letters, uppercase letters, and hyphens (-). It cannot start or end with a
       hyphen (-).
-    Default: aws-quickstart
+    Default: aws-ia
   QSS3BucketRegion:
     Type: String
     Description: >-
@@ -394,7 +389,7 @@ Parameters:
       hyphens (-), underscores (_), periods (.), asterisks (*), single quotes ('),
       open parenthesis ((), close parenthesis ()), and forward slashes (/). End the
       prefix with a forward slash.
-    Default: quickstart-amazon-rds-postgres/
+    Default: cfn-ps-amazon-rds/
   EnableBastion:
     Type: String
     Description: If true, creates a bastion stack.
