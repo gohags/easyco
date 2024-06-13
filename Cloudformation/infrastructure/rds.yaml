@@ -523,7 +523,7 @@ Mappings:
       family: postgres14
 Conditions:
   EnableBastionAccess: !Equals [!Ref EnableBastion, 'true']
-  UsingDefaultBucket: !Equals [!Ref QSS3BucketName, aws-quickstart]
+  UsingDefaultBucket: !Equals [!Ref QSS3BucketName, aws-ia]
   EventSubscription: !Equals [!Ref EnableEventSubscription, 'true']
   DoCreateDatabase: !Not [!Equals [!Ref DBName, '']]
   DBProvisionedIops: !Equals [!Ref DBStorageType, io1]

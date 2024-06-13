@@ -248,7 +248,7 @@ Parameters:
       The Quick Start bucket name can include numbers, lowercase
       letters, uppercase letters, and hyphens (-). It cannot start or end with a
       hyphen (-).
-    Default: aws-quickstart
+    Default: aws-ia
   QSS3BucketRegion:
     Type: String
     Description: >-
@@ -270,7 +270,7 @@ Parameters:
       hyphens (-), underscores (_), periods (.), asterisks (*), single quotes ('),
       open parenthesis ((), close parenthesis ()), and forward slashes (/). End the
       prefix with a forward slash.
-    Default: quickstart-amazon-rds-postgres/
+    Default: cfn-ps-linux-bastion/
   EnableBastion:
     Type: String
     Description: If true, creates a bastion stack.
