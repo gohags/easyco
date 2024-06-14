@@ -715,7 +715,7 @@ Conditions:
   UseAlternativeInitialization: !Not [!Equals [!Ref AlternativeInitializationScript, '']]
   CreateIAMRole: !Equals [!Ref AlternativeIAMRole, '']
   UseOSImageOverride: !Not [!Equals [!Ref OSImageOverride, '']]
-  UsingDefaultBucket: !Equals [!Ref QSS3BucketName, aws-quickstart]
+  UsingDefaultBucket: !Equals [!Ref QSS3BucketName, aws-ia]
   DefaultBanner: !Equals [!Ref BastionBanner, '']
   UseKeyPair: !Not [!Equals [!Ref KeyPairName, '']]
 Resources:
@@ -876,7 +876,7 @@ Resources:
             /tmp/auditing_configure.sh:
               source: !Sub
                 - https://${S3Bucket}.s3.${S3Region}.${AWS::URLSuffix}/${QSS3KeyPrefix}scripts/auditing_configure.sh
-                - S3Bucket: !If [UsingDefaultBucket, !Sub 'aws-quickstart-${AWS::Region}', !Ref QSS3BucketName]
+                - S3Bucket: !If [UsingDefaultBucket, !Sub '${QSS3BucketName}-${AWS::Region}', !Ref QSS3BucketName]
                   S3Region: !If [UsingDefaultBucket, !Ref AWS::Region, !Ref QSS3BucketRegion]
               mode: 000550
               owner: root
@@ -888,7 +888,7 @@ Resources:
                 - !Ref AlternativeInitializationScript
                 - !Sub
                     - https://${S3Bucket}.s3.${S3Region}.${AWS::URLSuffix}/${QSS3KeyPrefix}scripts/bastion_bootstrap.sh
-                    - S3Bucket: !If [UsingDefaultBucket, !Sub 'aws-quickstart-${AWS::Region}', !Ref QSS3BucketName]
+                    - S3Bucket: !If [UsingDefaultBucket, !Sub '${QSS3BucketName}-${AWS::Region}', !Ref QSS3BucketName]
                       S3Region: !If [UsingDefaultBucket, !Ref AWS::Region, !Ref QSS3BucketRegion]
               mode: 000550
               owner: root
@@ -912,7 +912,7 @@ Resources:
                     - DefaultBanner
                     - !Sub
                         - s3://${S3Bucket}/${QSS3KeyPrefix}scripts/banner_message.txt
-                        - S3Bucket: !If [UsingDefaultBucket, !Sub 'aws-quickstart-${AWS::Region}', !Ref QSS3BucketName]
+                        - S3Bucket: !If [UsingDefaultBucket, !Sub '${QSS3BucketName}-${AWS::Region}', !Ref QSS3BucketName]
                     - !Ref BastionBanner
     Properties:
       LaunchTemplateData:
@@ -1000,7 +1000,7 @@ Resources:
               EIP2: !If [2BastionCondition, !Ref EIP2, 'Null']
               EIP3: !If [3BastionCondition, !Ref EIP3, 'Null']
               EIP4: !If [4BastionCondition, !Ref EIP4, 'Null']
-              S3Bucket: !If [UsingDefaultBucket, !Sub 'aws-quickstart-${AWS::Region}', !Ref QSS3BucketName]
+              S3Bucket: !If [UsingDefaultBucket, !Sub '${QSS3BucketName}-${AWS::Region}', !Ref QSS3BucketName]
         MetadataOptions:
           HttpEndpoint: enabled
           HttpPutResponseHopLimit: !Ref EC2MetadataPutResponseHopLimit
