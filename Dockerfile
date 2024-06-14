@@ -17,7 +17,7 @@ COPY ./requirements.txt .
 RUN pip3 install -r requirements.txt
 RUN apt-get -y install gunicorn
 RUN pip3 install celery
-RUN apt install python3.10-gdbm
+#RUN apt install python3.10-gdbm
 
 # copy project
 ADD . /app
