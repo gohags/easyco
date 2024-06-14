@@ -613,6 +613,7 @@ Resources:
     Properties:
       TemplateURL: https://easyerp-repo.s3.amazonaws.com/Cloudformation/infrastructure/ecs-cluster.yaml
       Parameters:
+        KeyPairName: !Ref KeyPairName
         EnvironmentName: !Ref AWS::StackName
         InstanceType: t3.medium
         ClusterSizeMin: 2

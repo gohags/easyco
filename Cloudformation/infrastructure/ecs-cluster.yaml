@@ -27,6 +27,15 @@ Parameters:
     Type: Number
     Default: 2
 
+  KeyPairName:
+    Type: String
+    Description: >-
+      Name of an existing key pair, which allows you to securely connect to
+      your instance after it launches. Leave empty to proceed without a key
+      pair. You would need to use AWS Systems Manager Session Manager to
+      connect to the provisioned EC2 instances.
+    Default: ''
+
   VPC:
     Description: Choose which VPC this ECS cluster should be deployed to
     Type: AWS::EC2::VPC::Id
@@ -83,7 +92,7 @@ Resources:
     Type: AWS::AutoScaling::LaunchConfiguration
     Properties:
       ImageId: !Ref ECSAMI
-      KeyName: easyerp
+      KeyName: !Ref KeyPairName
       InstanceType: !Ref InstanceType
       SecurityGroups:
         - !Ref SecurityGroup
