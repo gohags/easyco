@@ -88,7 +88,7 @@ Resources:
       ContainerDefinitions:
         - Name: !Ref EnvironmentName
           Essential: true
-          Image: 903452596466.dkr.ecr.us-east-1.amazonaws.com/easyerp:latest
+          Image: 339712720637.dkr.ecr.us-east-1.amazonaws.com/easyerp:latest
           Memory: 1024
           Cpu: 1
           Environment:
