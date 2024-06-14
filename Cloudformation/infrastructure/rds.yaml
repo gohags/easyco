@@ -463,64 +463,54 @@ Parameters:
     Default: ''
 Mappings:
   DBFamilyMap:
-    '10.17':
-      family: postgres10
-    '10.18':
-      family: postgres10
-    '10.19':
-      family: postgres10
-    '10.20':
-      family: postgres10
-    '10.21':
-      family: postgres10
-    '10.22':
-      family: postgres10
-    '11.12':
-      family: postgres11
-    '11.13':
-      family: postgres11
-    '11.14':
-      family: postgres11
-    '11.15':
-      family: postgres11
     '11.16':
       family: postgres11
     '11.17':
       family: postgres11
-    '12.7':
-      family: postgres12
-    '12.8':
-      family: postgres12
-    '12.9':
-      family: postgres12
-    '12.10':
-      family: postgres12
+    '11.18':
+      family: postgres11
+    '11.19':
+      family: postgres11
+    '11.20':
+      family: postgres11
     '12.11':
       family: postgres12
     '12.12':
       family: postgres12
-    '13.3':
-      family: postgres13
-    '13.4':
-      family: postgres13
-    '13.5':
-      family: postgres13
-    '13.6':
-      family: postgres13
+    '12.13':
+      family: postgres12
+    '12.14':
+      family: postgres12
+    '12.15':
+      family: postgres12
     '13.7':
       family: postgres13
     '13.8':
       family: postgres13
-    '14.1':
-      family: postgres14
-    '14.2':
-      family: postgres14
+    '13.9':
+      family: postgres13
+    '13.10':
+      family: postgres13
+    '13.11':
+      family: postgres13
     '14.3':
       family: postgres14
     '14.4':
       family: postgres14
     '14.5':
       family: postgres14
+    '14.6':
+      family: postgres14
+    '14.7':
+      family: postgres14
+    '14.8':
+      family: postgres14
+    '15.2':
+      family: postgres15
+    '15.3':
+      family: postgres15
+    '15.4':
+      family: postgres15
 Conditions:
   EnableBastionAccess: !Equals [!Ref EnableBastion, 'true']
   UsingDefaultBucket: !Equals [!Ref QSS3BucketName, aws-quickstart]
