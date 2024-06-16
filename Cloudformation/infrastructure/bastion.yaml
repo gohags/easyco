@@ -243,7 +243,7 @@ Parameters:
       with a forward slash.
       See https://docs.aws.amazon.com/AmazonS3/latest/dev/UsingMetadata.html
       and https://aws-quickstart.github.io/option1.html.
-    AllowedPattern: ^([0-9a-zA-Z-.]+/)*$
+    AllowedPattern: ^[0-9a-zA-Z-/]*$
     ConstraintDescription:
       The Quick Start S3 key prefix can include numbers, lowercase letters,
       uppercase letters, hyphens (-), and forward slashes (/).
