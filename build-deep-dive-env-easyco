@@ -1,0 +1,7 @@
+template-file-path: https://github.com/gohags/easyco/blob/main/Cloudformation/master.yaml
+parameters:
+  Subnets: subnet-0c73068d7639ff213,subnet-022ed51d0a62517fc
+  EnvironmentName: build-deep-dive-env
+  VPC: vpc-01b9267606f0af419
+  SecurityGroup: sg-0c8669f5faaf90a01
+tags: {}
