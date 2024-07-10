@@ -21,7 +21,7 @@ jobs:
         # Ignore the failure of a step and avoid terminating the job.
         continue-on-error: true
         
-      - run: docker build --tag easyerp:prod-${{ github.sha }} .
+      - run: docker build --tag easyerp-${{ github.sha }} .
       - name: Push to ECR
         id: ecr
         uses: jwalton/gh-ecr-push@v1
@@ -44,7 +44,7 @@ jobs:
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_DEFAULT_REGION: us-east-1
+          AWS_DEFAULT_REGION: us-west-2
           ACTIONS_ALLOW_UNSECURE_COMMANDS: true
         
           
