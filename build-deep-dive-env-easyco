@@ -1,0 +1,3 @@
+template-file-path: https://github.com/gohags/easyco/blob/main/Cloudformation/master.yaml
+parameters: {}
+tags: {}
