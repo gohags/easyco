@@ -572,19 +572,19 @@ Resources:
     Type: AWS::CloudFormation::Stack
     Condition: EnableBastionAccess
     Properties:
-      TemplateURL: https://easyerp.s3.amazonaws.com/Cloudformation/infrastructure/bastion.yaml
-      Parameters:
-        KeyPairName: !Ref KeyPairName
-        PublicSubnet1ID: !GetAtt VPC.Outputs.PublicSubnet1
-        PublicSubnet2ID: !GetAtt VPC.Outputs.PublicSubnet2
-        EnableTCPForwarding: !Ref EnableTCPForwarding
-        RemoteAccessCIDR: !Ref RemoteAccessCIDR
-        VPCID: !GetAtt VPC.Outputs.VPC
-        QSS3BucketName: !Ref QSS3BucketNameBastion
-        QSS3BucketRegion: !Ref QSS3BucketRegionBastion
-        QSS3KeyPrefix: !Sub QSS3KeyPrefixBastion
-        BastionAMIOS: !Ref BastionAMIOS
-        RDSEndPointAddress: !GetAtt RDS.Outputs.RDSEndPointAddress
+#      TemplateURL: https://easyerp.s3.amazonaws.com/Cloudformation/infrastructure/bastion.yaml
+#      Parameters:
+#        KeyPairName: !Ref KeyPairName
+#        PublicSubnet1ID: !GetAtt VPC.Outputs.PublicSubnet1
+#        PublicSubnet2ID: !GetAtt VPC.Outputs.PublicSubnet2
+#        EnableTCPForwarding: !Ref EnableTCPForwarding
+#        RemoteAccessCIDR: !Ref RemoteAccessCIDR
+#        VPCID: !GetAtt VPC.Outputs.VPC
+#        QSS3BucketName: !Ref QSS3BucketNameBastion
+#        QSS3BucketRegion: !Ref QSS3BucketRegionBastion
+#        QSS3KeyPrefix: !Sub QSS3KeyPrefixBastion
+#        BastionAMIOS: !Ref BastionAMIOS
+#        RDSEndPointAddress: !GetAtt RDS.Outputs.RDSEndPointAddress
   RDS:
     Type: AWS::CloudFormation::Stack
     Properties:
