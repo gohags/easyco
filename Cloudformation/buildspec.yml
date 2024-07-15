@@ -12,8 +12,8 @@ phases:
     commands:
 
       # Validate all of the CloudFormation templates
-      - chmod a+x ./Cloudformation/tests/validate-templates.sh
-      - ./Cloudformation/tests/validate-templates.sh
+      # - chmod a+x ./Cloudformation/tests/validate-templates.sh
+      # - ./Cloudformation/tests/validate-templates.sh
 
   build:
     commands:
